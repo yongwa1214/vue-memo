@@ -1,4 +1,5 @@
 <script setup>
+//메모 등록, 메모 디테일 
 import { reactive, onMounted } from "vue";
 import { HttpService } from "@/services/HttpService";
 import { useRoute, useRouter } from "vue-router";
@@ -10,31 +11,40 @@ const route = useRoute();
 
 const state = reactive({
   memo:{
-    //id: undefined,
+    id: 0,
     title: '',
-    content: ''
+    content: '',
+    createdAt: ''
   }
 });
 
 const submit = ()=> { 
-
+  if(route.params.id){
+  httpService.setItem(state.memo);
+  
+} else{
   httpService.addItem(state.memo);
+}
 
-  alert('저장했습니다');
-
-  router.push({path: "/"});
+  //alert('저장했습니다');
+  router.push({path: '/'});
 };
 
-onMounted(()=>{
-  if(route.parmas.id){ // id에 값이 있다면 item 클릭, 없다면[+추가하기]버튼 클릭
-
+onMounted(async ()=>{
+  if(route.params.id) {//값이 있다면 item 클릭, 없다면 [+추가하기] 버튼 클릭
+    state.memo = await httpService.getItem(route.params.id);
+    state.memo.id = parseInt(route.params.id);
   }
 });
 
 </script>
 
 <template>
-  <form class="detial" @submit.prevent="submit">
+  <form class="detail" @submit.prevent="submit">
+    <div class="mb-3" v-if ="state.memo.createdAt">
+      등록일시: {{ state.memo.createdAt }}
+    </div>
+
     <div class="mb-3">
       <label for="title" class="form-label">제목</label>
       <input type="text" id="title" class="form-control p-3" v-model="state.memo.title">

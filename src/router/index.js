@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 //import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -13,13 +12,14 @@ const router = createRouter({
     {
       path: '/memos/add',
       name: 'memoAdd',
-      component:() => import('@/views/Form.vue')
+      component: () => import('@/views/Form.vue')
     },
     {
       path: '/memos/:id',
       name: 'memoDetail',
-      component:() => import('@/views/Form.vue')
+      component: () => import('@/views/Form.vue')
     }
+
     // {
     //   path: '/about',
     //   name: 'about',
@@ -32,4 +32,3 @@ const router = createRouter({
 })
 
 export default router
- 
